@@ -1,0 +1,11 @@
+{
+  "skill_name": "content-expression",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "给 kp-rate 补充速率、带宽和吞吐量的知识讲解，别写得像 AI 百科。",
+      "expected_output": "只编辑对应 KnowledgeArticleData，先根据真题角度设计 subpoint/block，用准确 Markdown/LaTeX 和简洁中文，执行 no-ai-slop，不改树、registry、真题链接或 Vue。",
+      "files": ["client/src/content/knowledge-articles/computer-networks/network-architecture/rate-bandwidth-throughput.ts"]
+    }
+  ]
+}

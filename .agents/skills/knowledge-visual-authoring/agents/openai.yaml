@@ -1,0 +1,4 @@
+interface:
+  display_name: "Knowledge Visual Authoring"
+  short_description: "Create clear validated visuals for 408 knowledge articles."
+  default_prompt: "Use $knowledge-visual-authoring to create or revise this static knowledge visual."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "408 Knowledge Authoring Workflow"
+  short_description: "Route knowledge changes through focused project skills."
+  default_prompt: "Use $knowledge-authoring-workflow to route and complete this knowledge-content change."

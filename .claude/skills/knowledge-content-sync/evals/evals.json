@@ -1,0 +1,23 @@
+{
+  "skill_name": "knowledge-content-sync",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我在物理层的通信基础这个 Section 下新增了三个 KnowledgePoint，注册它们，不要增加左侧目录层级。",
+      "expected_output": "保留 Chapter → Section 两层左栏；三个 point 按 points 顺序聚合在同一 Section，registry 完整，不越界编写文章正文。",
+      "files": ["client/src/content/knowledge-tree.ts", "client/src/content/knowledge-articles/registry.ts"]
+    },
+    {
+      "id": 2,
+      "prompt": "把原来合在一起的 TCP 文章按我改好的树拆开，已有真题关联别弄丢。",
+      "expected_output": "先搜索 knowledgeBlockIds，再调整 point/registry/文件归属；保留语义未变的 block ID 和真题引用，把正文改写交给 content-expression。",
+      "files": ["client/src/content/knowledge-tree.ts", "client/src/content/knowledge-articles/registry.ts", "client/public/exams"]
+    },
+    {
+      "id": 3,
+      "prompt": "Section 页面漏了一篇已有文章，修好树和注册表的对应关系。",
+      "expected_output": "定位 section.points 与 registry 覆盖缺口，恢复已有文章的注册，不改 Vue 组件或文章措辞。",
+      "files": ["client/src/content/knowledge-tree.ts", "client/src/content/knowledge-articles/registry.ts"]
+    }
+  ]
+}

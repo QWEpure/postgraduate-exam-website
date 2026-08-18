@@ -1,0 +1,4 @@
+interface:
+  display_name: "408 Content Expression"
+  short_description: "Write and polish structured 408 knowledge articles."
+  default_prompt: "Use $content-expression to write or revise this 408 knowledge article clearly and naturally."

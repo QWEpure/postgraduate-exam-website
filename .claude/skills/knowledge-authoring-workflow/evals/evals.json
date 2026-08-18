@@ -1,0 +1,11 @@
+{
+  "skill_name": "knowledge-authoring-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "补充机械硬盘与外存管理这篇共用文章，加一张 SVG，并把相关操作系统真题关联上。",
+      "expected_output": "总入口依次调用 content-expression、knowledge-visual-authoring 和 knowledge-content-sync；复用 co-external-hdd 单一数据源，允许 os 真题关联 kb-co-* block，不创建镜像文章。",
+      "files": ["client/src/content/knowledge-tree.ts", "client/src/content/knowledge-articles/computer-organization/co-external-hdd.ts", "client/public/exams"]
+    }
+  ]
+}

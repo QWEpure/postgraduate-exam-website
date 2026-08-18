@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stepwise Teaching Animation"
+  short_description: "Build causal click-by-click teaching animations."
+  default_prompt: "Use $stepwise-teaching-animation to create or revise this teaching animation."

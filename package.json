@@ -1,0 +1,14 @@
+{
+  "name": "kaoyan-408-network-mvp",
+  "private": true,
+  "workspaces": ["client"],
+  "scripts": {
+    "dev": "npm run rebuild:exams && node scripts/build-search-index.cjs && npm run dev -w client",
+    "build": "npm run rebuild:exams && npm run validate && node scripts/build-search-index.cjs && npm run build -w client",
+    "build:search-index": "node scripts/build-search-index.cjs",
+    "rebuild:exams": "node scripts/rebuild-exam-index.mjs",
+    "validate": "npm run validate:content && npm run validate:exams",
+    "validate:content": "node scripts/validate_knowledge_content.mjs",
+    "validate:exams": "node scripts/validate_exam_content.mjs"
+  }
+}

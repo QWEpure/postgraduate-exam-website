@@ -1,0 +1,54 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+
+# 搜索索引（由 scripts/build-search-index.cjs 自动生成，勿跟踪）
+client/public/search/search-index.json
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 测试覆盖率
+coverage/
+.nyc_output/
+*.lcov
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Vite 缓存（如果你有多个 client 目录，可以用通配符）
+**/.vite/
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.pid
+
+# Python 缓存
+__pycache__/
+*.pyc

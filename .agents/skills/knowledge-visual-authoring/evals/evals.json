@@ -1,0 +1,11 @@
+{
+  "skill_name": "knowledge-visual-authoring",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "给停止等待协议画一张发送方、接收方、数据帧和 ACK 的 SVG 时序图。",
+      "expected_output": "读取 timing-diagrams.md，用固定语义区、最小 16px 字号和正确 bracket；运行 getBBox 碰撞/越界检查并在实际知识页验收。",
+      "files": []
+    }
+  ]
+}

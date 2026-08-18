@@ -1,0 +1,4 @@
+interface:
+  display_name: "Knowledge Content Sync"
+  short_description: "Maintain knowledge hierarchy, IDs, registry, and exam links."
+  default_prompt: "Use $knowledge-content-sync to update the knowledge hierarchy, registry, IDs, or exam links safely."

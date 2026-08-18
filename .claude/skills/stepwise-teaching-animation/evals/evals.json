@@ -1,0 +1,11 @@
+{
+  "skill_name": "stepwise-teaching-animation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "做一个右端 pivot 的快速排序点击动画，只需要讲清一次划分。",
+      "expected_output": "用足够长的数组完整展示 i 找大、j 找小、交换并重复；单独展示 i>j；明确 pivot 与 i 交换；不把指针例行内收拆成一步，不演示全部递归。",
+      "files": ["client/src/animations"]
+    }
+  ]
+}

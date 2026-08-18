@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "totalQuestions": 846,
+  "years": [
+    {
+      "year": 2009,
+      "questionCount": 47,
+      "path": "/exams/2009/paper.json"
+    },
+    {
+      "year": 2010,
+      "questionCount": 47,
+      "path": "/exams/2010/paper.json"
+    },
+    {
+      "year": 2011,
+      "questionCount": 47,
+      "path": "/exams/2011/paper.json"
+    },
+    {
+      "year": 2012,
+      "questionCount": 47,
+      "path": "/exams/2012/paper.json"
+    },
+    {
+      "year": 2013,
+      "questionCount": 47,
+      "path": "/exams/2013/paper.json"
+    },
+    {
+      "year": 2014,
+      "questionCount": 47,
+      "path": "/exams/2014/paper.json"
+    },
+    {
+      "year": 2015,
+      "questionCount": 47,
+      "path": "/exams/2015/paper.json"
+    },
+    {
+      "year": 2016,
+      "questionCount": 47,
+      "path": "/exams/2016/paper.json"
+    },
+    {
+      "year": 2017,
+      "questionCount": 47,
+      "path": "/exams/2017/paper.json"
+    },
+    {
+      "year": 2018,
+      "questionCount": 47,
+      "path": "/exams/2018/paper.json"
+    },
+    {
+      "year": 2019,
+      "questionCount": 47,
+      "path": "/exams/2019/paper.json"
+    },
+    {
+      "year": 2020,
+      "questionCount": 47,
+      "path": "/exams/2020/paper.json"
+    },
+    {
+      "year": 2021,
+      "questionCount": 47,
+      "path": "/exams/2021/paper.json"
+    },
+    {
+      "year": 2022,
+      "questionCount": 47,
+      "path": "/exams/2022/paper.json"
+    },
+    {
+      "year": 2023,
+      "questionCount": 47,
+      "path": "/exams/2023/paper.json"
+    },
+    {
+      "year": 2024,
+      "questionCount": 47,
+      "path": "/exams/2024/paper.json"
+    },
+    {
+      "year": 2025,
+      "questionCount": 47,
+      "path": "/exams/2025/paper.json"
+    },
+    {
+      "year": 2026,
+      "questionCount": 47,
+      "path": "/exams/2026/paper.json"
+    }
+  ]
+}
