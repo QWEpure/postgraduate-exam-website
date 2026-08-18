@@ -15,7 +15,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
  *   - 构建期同步 src/search/408-terms.txt → dist/search/408-terms.txt（保证唯一数据源）
  */
 export default defineConfig({
-  base: process.env.VITE_BASE_PATH ?? '/postgraduate-exam-website/',
+  // 约定：
+  //   - 本地 `npm run dev`：未传 VITE_BASE_PATH → base=/，直接打开 http://localhost:5173/ 即可
+  //   - GitHub Pages 部署：deploy.yml 显式传 VITE_BASE_PATH=/postgraduate-exam-website/
+  //   - 自定义域名部署：可自行传 VITE_BASE_PATH=/
+  base: process.env.VITE_BASE_PATH ?? '/',
   plugins: [
     vue(),
     tailwindcss(),

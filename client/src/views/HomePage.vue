@@ -27,14 +27,6 @@ function submit() {
   router.push({ name: "search", query: { q } });
 }
 
-function gotoKnowledge() {
-  router.push("/knowledge");
-}
-
-function gotoExams() {
-  router.push("/exams");
-}
-
 /* ============================================================
  * 打字机副标题：循环展示多句话
  *  - 进页面先显示空 + 闪烁光标
@@ -255,22 +247,20 @@ const contributorsRow2 = fillRow(row2Raw);
       </form>
 
       <div class="flex justify-center gap-[18px] mt-[34px] max-md:flex-col max-md:items-center">
-        <a
+        <router-link
+          to="/knowledge"
           class="cta-btn cta-btn-primary h-[62px] min-w-[235px] px-[34px] rounded-[999px] border border-[#3260df] inline-flex items-center justify-center gap-7 no-underline text-lg font-bold cursor-pointer bg-[#1f49ba] text-white shadow-[0_14px_28px_rgba(31,73,186,0.18)] max-md:w-full max-md:max-w-[420px]"
-          href="javascript:void(0)"
-          @click="gotoKnowledge"
         >
           <span>浏览知识简纲</span>
           <span class="cta-arrow">→</span>
-        </a>
-        <a
+        </router-link>
+        <router-link
+          to="/exams"
           class="cta-btn cta-btn-ghost h-[62px] min-w-[235px] px-[34px] rounded-[999px] border border-[#3260df] inline-flex items-center justify-center gap-7 no-underline text-lg font-bold cursor-pointer bg-white text-[#1845ad] max-md:w-full max-md:max-w-[420px]"
-          href="javascript:void(0)"
-          @click="gotoExams"
         >
           <span>查看历年真题</span>
           <span class="cta-arrow">→</span>
-        </a>
+        </router-link>
       </div>
     </section>
 
