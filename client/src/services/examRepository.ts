@@ -1,8 +1,10 @@
 import type { Exam, ExamFilters, ExamKnowledgeLink, ExamListResponse, ExamQuestionType, ExamSubject } from '@/types'
+import { withBase } from '@/search/shared'
 
 /**
  * 真题静态数据仓库。所有真题数据从 client/public/exams/ 读取（纯静态）。
  * manifest.json / index.json / {year}/paper.json 是静态题库文件，直接作为数据源。
+ * 路径统一走 withBase 拼接 BASE_URL，适配 GitHub Pages 二级目录部署。
  */
 
 export type ExamManifest = {
@@ -51,19 +53,19 @@ async function fetchJson<T>(url: string): Promise<T> {
 }
 
 export function getExamManifest(): Promise<ExamManifest> {
-  if (!manifestPromise) manifestPromise = fetchJson<ExamManifest>('/exams/manifest.json')
+  if (!manifestPromise) manifestPromise = fetchJson<ExamManifest>(withBase('/exams/manifest.json'))
   return manifestPromise
 }
 
 export function getExamIndex(): Promise<ExamIndexItem[]> {
-  if (!indexPromise) indexPromise = fetchJson<ExamIndexItem[]>('/exams/index.json')
+  if (!indexPromise) indexPromise = fetchJson<ExamIndexItem[]>(withBase('/exams/index.json'))
   return indexPromise
 }
 
 export function getExamPaper(year: number): Promise<ExamPaper | null> {
   let pending = paperCache.get(year)
   if (!pending) {
-    pending = fetchJson<ExamPaper>(`/exams/${year}/paper.json`).catch(() => {
+    pending = fetchJson<ExamPaper>(withBase(`/exams/${year}/paper.json`)).catch(() => {
       paperCache.delete(year)
       return null
     })

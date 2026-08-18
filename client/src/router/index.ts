@@ -1,7 +1,13 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
+/**
+ * GitHub Pages 是纯静态托管，不支持 SPA history 模式的任意路径 rewrite：
+ *   - 用户直接访问 /postgraduate-exam-website/knowledge/os/mutex 会 404
+ *   - 切到 createWebHashHistory，路由信息放在 # 之后（/#/knowledge/os/mutex），
+ *     服务器只取 # 之前的路径请求 index.html，SPA 自解析 # 后内容，一切正常。
+ */
 export default createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) return savedPosition
     if (to.path === from.path) return undefined

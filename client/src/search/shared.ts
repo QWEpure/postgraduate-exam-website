@@ -53,6 +53,26 @@ export type LoadedCorpus = {
   term408: Set<string>
 }
 
+/* ========================================================================== *
+ * 公共路径工具（GitHub Pages 二级目录部署适配）
+ * ========================================================================== */
+
+/**
+ * 拼上 Vite 部署的 base 路径，让二级目录部署下也能正确请求静态资源。
+ *   - base = '/postgraduate-exam-website/'，
+ *     withBase('/search/search-index.json') → '/postgraduate-exam-website/search/search-index.json'
+ *   - base = '/' 时直接原样返回。
+ * 完整 URL（http(s):// / //:）和相对路径不拼接，直接返回。
+ */
+export function withBase(path: string): string {
+  if (!path) return ''
+  if (/^(https?:)?\/\//i.test(path)) return path // 完整 URL / protocol-relative
+  if (!path.startsWith('/')) return path          // 相对路径直接返回
+  const base = import.meta.env?.BASE_URL ?? '/'
+  if (!base || base === '/') return path
+  return `${base.replace(/\/$/, '')}${path}`
+}
+
 let corpusPromise: Promise<LoadedCorpus> | null = null
 let segmentPromise: Promise<((input: string) => string[]) | undefined> | null = null
 
@@ -62,12 +82,11 @@ let segmentPromise: Promise<((input: string) => string[]) | undefined> | null = 
 
 /**
  * 读取 408 领域专业词典（与 debug-search.ts / public/search 共用同一个 408-terms.txt 源文件）。
- *  - 浏览器：fetch('/search/408-terms.txt')（构建时拷贝到 public/search/ 由 Vite 静态托管）
+ *  - 浏览器：fetch(withBase('/search/408-terms.txt'))（适配 GitHub Pages 二级目录）
  *  - Node jiti：fetch(file:///...)，fallback 到 fs 读 src/search/408-terms.txt 源
- * 这样两边（shared.ts + debug-search.ts）共用同一个词典，未来增词只改一个源文件。
  */
 async function loadExam408Dict(): Promise<string> {
-  const browserPath = '/search/408-terms.txt'
+  const browserPath = withBase('/search/408-terms.txt')
   try {
     const res = await fetch(browserPath)
     if (res.ok) {
@@ -167,8 +186,8 @@ export async function ensureCorpusLoaded(): Promise<LoadedCorpus> {
   if (corpusPromise) return corpusPromise
   corpusPromise = (async () => {
     const [corpusJson, synonymsJson, dictText, segment]: [SearchCorpus, string[][], string, ((i: string) => string[]) | undefined] = await Promise.all([
-      fetch('/search/search-index.json').then((r) => r.json()),
-      fetch('/search/synonyms.json').then((r) => r.json()),
+      fetch(withBase('/search/search-index.json')).then((r) => r.json()),
+      fetch(withBase('/search/synonyms.json')).then((r) => r.json()),
       loadExam408Dict(),
       loadSegmentit(),
     ])
