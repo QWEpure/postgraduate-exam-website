@@ -1,6 +1,16 @@
 {
-  "name": "kaoyan-408-network-mvp",
+  "name": "408-simple",
+  "version": "0.1.0",
   "private": true,
+  "license": "CC-BY-4.0",
+  "author": "liangbohan",
+  "description": "408 计算机学科考研电子教材（开源、AI 原生、极简、可视化）",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liangbohan/postgraduate-exam-website"
+  },
+  "homepage": "https://liangbohan.github.io/postgraduate-exam-website/",
+  "keywords": ["408", "kaoyan", "考研", "计算机", "csapp", "datastructure", "os", "computer-network"],
   "workspaces": ["client"],
   "scripts": {
     "dev": "npm run rebuild:exams && node scripts/build-search-index.cjs && npm run dev -w client",

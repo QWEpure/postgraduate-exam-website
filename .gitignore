@@ -40,6 +40,15 @@ coverage/
 *.swo
 *~
 
+# TypeScript 增量编译产物
+**/tsconfig.*.tsbuildinfo
+
+# AI 助手本地锁文件
+skills-lock.json
+
+# 408-terms.txt 的 public 副本：由 vite 构建时从 src/ 自动生成，勿手动维护或提交
+client/public/search/408-terms.txt
+
 # Vite 缓存（如果你有多个 client 目录，可以用通配符）
 **/.vite/
 

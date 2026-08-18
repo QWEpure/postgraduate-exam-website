@@ -2,6 +2,8 @@
   "name": "client",
   "private": true,
   "version": "0.1.0",
+  "license": "CC-BY-4.0",
+  "author": "liangbohan",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -31,7 +33,6 @@
     "tailwindcss": "^4.3.3",
     "typescript": "~5.7.2",
     "vite": "^8.1.5",
-    "vite-plugin-vue-devtools": "^8.2.1",
     "vue-tsc": "^2.2.0"
   }
 }

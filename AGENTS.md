@@ -43,7 +43,6 @@ postgraduate-exam-website/
 │   ├── build-search-index.cjs    #   搜索索引生成
 │   ├── validate_knowledge_content.mjs
 │   └── validate_exam_content.mjs
-├── blueprint/                    # 早期设计文档与需求
 └── client/                       # 前端工程
     ├── vite.config.ts
     ├── index.html
@@ -83,8 +82,9 @@ postgraduate-exam-website/
     └── public/
         ├── exams/<year>/paper.json     # 真题静态题库
         └── search/
-            ├── 408-terms.txt           # 408 专业词典（一行一词）
             └── synonyms.json            # 同义词表
+    # 注：408-terms.txt 唯一数据源在 client/src/search/408-terms.txt，
+    #    public/search/ 下的副本由 vite.config.ts closeBundle 钩子自动生成。
 ```
 
 ## 路由表
@@ -128,9 +128,13 @@ Book
 
 ## 硬约束（勿违反）
 
+- **路由模式**：必须是 `createWebHashHistory()`（GitHub Pages 二级目录下 history 模式刷新会 404）。
 - **Vite 必须生成 sourcemap**：`build.sourcemap: true`，`vueDevtools` 插件已移除（防止 sourcemap 重复）。
+- **Vite `base`**：必须是 `/postgraduate-exam-website/`（GitHub Pages 二级目录）或通过环境变量 `VITE_BASE_PATH` 覆盖（自定义域名时改为 `/`）。
 - **`launch.json`** 使用简化 `sourceMapPathOverrides`，只保留 `"vite:///src/*": "${workspaceFolder}/client/src/*"`。
 - **搜索输入**：最多 20 字符；搜索结果 `topK = 8`。
+- **静态 fetch 绝对路径**：前端所有 `fetch('/xxx/...')` 类型的请求（/exams/... /search/...）必须通过 `shared.ts` 里的 `withBase()` 拼接 `import.meta.env.BASE_URL`，否则 GitHub Pages 二级目录下 404。
+- **408-terms.txt 只有一份**：唯一源文件是 `client/src/search/408-terms.txt`；`client/public/search/408-terms.txt` 由 vite 插件自动生成，**绝不手动编辑或提交**（已在 .gitignore 忽略）。
 - **SVG 图表**：禁止步骤标签、侧边说明框、列号标尺、中文标签、底部结论横幅、箭头标注、无关附文。线段长度必须匹配语义范围（如除号竖线只到被除数行底部）。
 - **涉及计算的 SVG**：先在草稿列出每一行数值，确认数学正确后再填坐标。
 - **Manim-web 坐标系**：y 轴向上为正，与 SVG 相反；从 SVG 切到 Manim-web 时 `+margin` / `-margin` 极易写反。
