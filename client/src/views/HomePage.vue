@@ -136,6 +136,9 @@ const ICON_BILIBILI = `<svg viewBox="0 0 24 24" width="14" height="14" fill="cur
 const ICON_DOUYIN = `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19.589 9.186a8.122 8.122 0 0 1-4.876-1.614v7.294a6.068 6.068 0 1 1-6.068-6.068c.124 0 .246.012.368.024v3.058a3.012 3.012 0 1 0 2.13 2.887V2h2.965a4.528 4.528 0 0 0 4.527 4.527v2.659z"/></svg>`
 const ICON_XHS = `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3.6 7.2c0-.99.81-1.8 1.8-1.8h13.2c.99 0 1.8.81 1.8 1.8v9.6c0 .99-.81 1.8-1.8 1.8H5.4c-.99 0-1.8-.81-1.8-1.8V7.2zm2.4 1.2v7.2h12V8.4h-12zm2.4 2.4h7.2v2.4H8.4v-2.4zm0 3.6h4.8v.6H8.4v-.6z"/></svg>`
 const ICON_GITHUB = `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.207 3.438 9.624 8.205 11.181.6.111.82-.254.82-.564 0-.278-.01-1.017-.015-1.998-3.338.71-4.042-1.58-4.042-1.58-.546-1.361-1.333-1.724-1.333-1.724-1.089-.731.083-.716.083-.716 1.205.083 1.838 1.215 1.838 1.215 1.071 1.797 2.811 1.278 3.497.977.109-.762.419-1.278.762-1.571-2.667-.298-5.471-1.302-5.471-5.791 0-1.278.464-2.322 1.222-3.14-.123-.294-.53-1.474.115-3.072 0 0 .996-.312 3.262 1.2a11.46 11.46 0 0 1 2.97-.393c1.005.005 2.018.135 2.96.393 2.265-1.512 3.26-1.2 3.26-1.2.646 1.598.24 2.778.117 3.072.76.818 1.221 1.862 1.221 3.14 0 4.501-2.808 5.488-5.484 5.778.43.362.814 1.078.814 2.173 0 1.571-.014 2.838-.014 3.223 0 .313.216.682.824.564C20.565 21.91 24 17.496 24 12.292 24 5.78 18.627.5 12 .5z"/></svg>`
+/* 外部链接图标：窗口轮廓 + 右上角飞出箭头（Heroicons 风格）*/
+const ICON_EXTERNAL_LINK = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>`
+const GITHUB_REPO_URL = 'https://github.com/liangbohan/postgraduate-exam-website'
 
 const PLATFORM_ICON: Record<Contributor['platform'], string> = {
   bilibili: ICON_BILIBILI,
@@ -219,9 +222,16 @@ const contributorsRow2 = fillRow(row2Raw);
         </p>
       </div>
 
-      <div class="mt-4 text-base text-[#6680ba]">
-        知识简纲　·　历年真题　·　可视化理解
-      </div>
+      <a
+        :href="GITHUB_REPO_URL"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="github-repo-link mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm text-[#4f6aa0] hover:text-[#1d4ed8] hover:border-[#b9cdf0] hover:bg-white transition-all duration-200 hover:-translate-y-px hover:shadow-md"
+      >
+        <span v-html="ICON_GITHUB" class="inline-flex items-center justify-center" />
+        <span>Github 开源仓库</span>
+        <span v-html="ICON_EXTERNAL_LINK" class="inline-flex items-center justify-center opacity-80" />
+      </a>
 
       <form
         class="h-[78px] mt-[38px] mx-auto w-full max-w-[920px] border border-[#dbe4ef] rounded-[28px] flex items-center px-[14px] pl-7 bg-white/94 shadow-[0_18px_45px_rgba(52,87,150,0.1)]"
