@@ -1,5 +1,10 @@
 # 408 简纲 · AI 原生的考研电子教材
 
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+> 本项目所有知识内容采用 **CC BY 4.0** 协议开源：允许任何人复制、修改、分发、甚至商业使用，**唯一要求**是署名 —— 注明原作者与出处即可。代码部分沿用同样的宽松原则。
+
 ## 愿景
 
 我们想用开源的方式，**共创、共建、共享** 一份新一代的 **AI 原生电子教材**。
