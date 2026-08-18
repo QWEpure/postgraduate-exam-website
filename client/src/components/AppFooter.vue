@@ -14,9 +14,7 @@ const XHS_ICON = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentC
 
 // TODO: 把 url 替换成实际的作者主页地址
 const socials: Social[] = [
-  { name: 'B站', url: 'https://space.bilibili.com/', icon: BILIBILI_ICON },
-  { name: '抖音', url: 'https://www.douyin.com/user/', icon: DOUYIN_ICON },
-  { name: '小红书', url: 'https://www.xiaohongshu.com/user/profile/', icon: XHS_ICON },
+  { name: 'bilibili', url: 'https://space.bilibili.com/385409016', icon: BILIBILI_ICON },
 ]
 </script>
 
@@ -41,7 +39,7 @@ const socials: Social[] = [
       </div>
 
       <!-- 备案信息 -->
-      <div class="footer-row filing-row">
+      <!-- <div class="footer-row filing-row">
         <span>© 2026 408 简纲</span>
         <a
           href="https://beian.miit.gov.cn/"
@@ -58,7 +56,7 @@ const socials: Social[] = [
           <span class="ga-badge">京</span>
           京公网安备 11000002000000 号
         </a>
-      </div>
+      </div> -->
 
       <div class="footer-row tagline-row">
         <span>极简 · 精炼 · 可视化</span>
