@@ -40,9 +40,9 @@ export const ds4_3KmpImprovedArticle: KnowledgeArticleData = {
         {
           id: 'kb-ds-4-3-2-1',
           type: 'paragraph',
-          text: `**nextval 手算规则**（在 next 基础上，下标从 0 起）：nextval[0] = -1。对 j ≥ 1，设 k = next[j]：
-          - 若 **t[j] == t[k]**，则 **nextval[j] = nextval[k]**（沿用更早的修正值）；
-          - 若 **t[j] ≠ t[k]**，则 **nextval[j] = next[j]**（保留原回跳位置）。`,
+          text: String.raw`**nextval 手算规则**（在 next 基础上，下标从 0 起）：nextval[0] = -1。对 j ≥ 1，设 k = next[j]：
+- 若 **t[j] == t[k]**，则 **nextval[j] = nextval[k]**（沿用更早的修正值）；
+- 若 **t[j] ≠ t[k]**，则 **nextval[j] = next[j]**（保留原回跳位置）。`,
         },
         {
           id: 'kb-ds-4-3-2-2',
