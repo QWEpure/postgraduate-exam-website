@@ -1073,10 +1073,10 @@ export const operatingSystemsBook: Book = {
 }
 
 export const knowledgeBooks: Book[] = [
-  computerNetworkBook,
   dataStructuresBook,
   computerOrganizationBook,
   operatingSystemsBook,
+  computerNetworkBook,
 ]
 
 export const allKnowledgePoints = knowledgeBooks.flatMap((book) =>
