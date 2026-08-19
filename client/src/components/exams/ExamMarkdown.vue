@@ -13,7 +13,10 @@ const html = computed(() => {
     gfm: true,
   })
 
-  const sanitized = DOMPurify.sanitize(rendered, {
+  // 给绝对路径 <img src="/..."> 拼上 Vite base，修复 GitHub Pages 二级目录下图片 404
+  const withBase = rewriteImgSrc(rendered as string)
+
+  const sanitized = DOMPurify.sanitize(withBase, {
     FORBID_ATTR: ['class', 'id', 'style'],
     FORBID_TAGS: ['button', 'embed', 'form', 'iframe', 'input', 'object', 'script', 'style'],
     USE_PROFILES: { html: true },
@@ -21,6 +24,13 @@ const html = computed(() => {
 
   return renderMath(sanitized as string)
 })
+
+/** 把 markdown 渲染出的 <img src="/xxx"> 改成 BASE_URL + /xxx，适配二级目录部署 */
+function rewriteImgSrc(html: string): string {
+  const base = import.meta.env.BASE_URL ?? '/'
+  if (!base || base === '/') return html
+  return html.replace(/(<img\s+[^>]*?src=["'])\/(?!\/)/gi, `$1${base}`)
+}
 
 function renderMath(html: string): string {
   const mathPattern = /\$\$([\s\S]*?)\$\$|\\\[([\s\S]*?)\\\]|\$([^$\n]+?)\$|\\\(([\s\S]*?)\\\)/g
