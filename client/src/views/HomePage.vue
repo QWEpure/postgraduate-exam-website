@@ -111,6 +111,19 @@ function onMouseMove(e: MouseEvent) {
 onMounted(() => {
   scheduleType(220); // 进页面 220ms 后开始打第一句
   window.addEventListener("mousemove", onMouseMove, { passive: true });
+
+  // 首屏渲染完后，空闲时预加载知识页和真题页的 chunk
+  // 这两个路由是懒加载，KnowledgePage/ExamPage 都依赖 registry.ts（2.9MB）
+  // 不预加载的话，用户首次点击要等 chunk 下载完才会跳转，看起来"点不动"
+  const prefetchChunks = () => {
+    import("@/views/KnowledgePage.vue").catch(() => {})
+    import("@/views/ExamPage.vue").catch(() => {})
+  }
+  if ("requestIdleCallback" in window) {
+    (window as any).requestIdleCallback(prefetchChunks, { timeout: 4000 })
+  } else {
+    setTimeout(prefetchChunks, 2500)
+  }
 });
 
 onBeforeUnmount(() => {
