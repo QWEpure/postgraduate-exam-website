@@ -136,7 +136,21 @@ function scrollToExam(id: string, smooth = true) {
     behavior: smooth ? 'smooth' : 'auto',
     block: 'start',
   })
-  router.replace({ query: { ...route.query, exam: id } })
+  // 同步当前筛选到 query，避免 ...route.query 丢失 year 等参数
+  router.replace({ query: { ...route.query, ...buildFilterQuery(), exam: id } })
+}
+
+/** 把当前筛选状态序列化成 query 对象，用于 router.replace 时保留 year/subject 等参数 */
+function buildFilterQuery() {
+  const query: Record<string, string> = {}
+  if (selectedYear.value != null) query.year = String(selectedYear.value)
+  if (selectedSubject.value) query.subject = selectedSubject.value
+  if (selectedType.value) query.questionType = selectedType.value
+  if (selectedChapter.value) query.chapter = selectedChapter.value
+  if (selectedTag.value) query.tag = selectedTag.value
+  if (selectedKnowledgeBlockId.value) query.knowledgeBlockId = selectedKnowledgeBlockId.value
+  if (keyword.value) query.keyword = keyword.value
+  return query
 }
 
 function updateActiveExam() {
