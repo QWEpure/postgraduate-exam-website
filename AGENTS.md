@@ -123,7 +123,7 @@ Book
 | 扩 408 专业词典 | `client/public/search/408-terms.txt`（一行一词） |
 | 改同义词 | `client/public/search/synonyms.json` |
 | 首页共建者名单 | `client/src/content/contributors.ts` |
-| 全局页头 / 页脚 | `client/src/components/layout/AppHeader.vue`、`client/src/components/AppFooter.vue` |
+| 全局页脚 | `client/src/components/AppFooter.vue` |
 | 路由 | `client/src/router/index.ts` |
 
 ## 硬约束（勿违反）

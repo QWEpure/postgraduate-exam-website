@@ -37,12 +37,12 @@ const open = ref(false)
       >408 真题</RouterLink>
     </nav>
     <div class="ml-auto hidden items-center gap-3 max-md:hidden">
-      <span class="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1.5 text-[11px] font-bold tracking-[.06em] text-emerald-700">
+      <span class="flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3.5 py-1.5 text-[11px] font-bold tracking-[.06em] text-amber-700">
         <span class="relative inline-flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
         </span>
-        计算机网络 · 试水版
+        公测中 · 功能尚不稳定
       </span>
     </div>
   </header>

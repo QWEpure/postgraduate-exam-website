@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { contributors as ALL_CONTRIBUTORS, type Contributor } from "@/content/contributors";
+import beta from "@/components/layout/beta.vue";
 
 const router = useRouter();
 const query = ref("");
@@ -214,6 +215,7 @@ const contributorsRow2 = fillRow(row2Raw);
         <div class="brand-text text-[34px] font-extrabold tracking-[-1px] font-mono">
           408 简纲
         </div>
+        <beta />
       </div>
 
       <h1 class="mt-[42px] mb-[18px] text-[clamp(63px,7vw,102px)] leading-[1.05] tracking-[-0.045em] font-[850]">
