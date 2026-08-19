@@ -41,8 +41,21 @@ function onSearchKeydown(e: KeyboardEvent) {
 const LEFT_DRAWER_WIDTH = 304
 const RIGHT_DRAWER_WIDTH = 270
 // 有搜索内容时也保持侧栏展开，避免失焦后侧栏收回
-const leftOpen = computed(() => leftPinned.value || leftHovered.value || !!sidebarQuery.value.trim())
-const rightOpen = computed(() => rightPinned.value || rightHovered.value)
+// 移动端（compactLayout）不依赖 hover：触摸设备 mouseenter/leave 行为不可靠
+const leftOpen = computed(() => compactLayout.value
+  ? leftPinned.value
+  : (leftPinned.value || leftHovered.value || !!sidebarQuery.value.trim()))
+const rightOpen = computed(() => compactLayout.value
+  ? rightPinned.value
+  : (rightPinned.value || rightHovered.value))
+
+/** 移动端点击遮罩关闭所有边栏 */
+function closeMobileDrawers() {
+  leftPinned.value = false
+  leftHovered.value = false
+  rightPinned.value = false
+  rightHovered.value = false
+}
 const readerColumns = computed(() => compactLayout.value
   ? 'minmax(0,1fr)'
   : `${leftOpen.value ? LEFT_DRAWER_WIDTH : 0}px minmax(0,1fr) ${rightOpen.value ? RIGHT_DRAWER_WIDTH : 0}px`)
@@ -240,6 +253,13 @@ onBeforeUnmount(() => {
     class="relative grid min-h-screen overflow-x-clip bg-[#e9eef5] transition-[grid-template-columns] duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
     :style="{ gridTemplateColumns: readerColumns }"
   >
+    <!-- 移动端遮罩：边栏展开时显示，点击关闭 -->
+    <div
+      v-if="compactLayout && (leftOpen || rightOpen)"
+      class="fixed inset-0 z-20 bg-black/30 backdrop-blur-[2px]"
+      @click="closeMobileDrawers"
+    ></div>
+
     <div
       class="fixed inset-y-0 left-0 z-50 w-7 cursor-e-resize"
       aria-label="悬停展开书籍目录"
