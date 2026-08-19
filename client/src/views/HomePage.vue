@@ -300,7 +300,7 @@ const contributorsRow2 = fillRow(row2Raw);
         </div>
       </div>
 
-      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="contributors-more">
+      <a href="https://github.com/liangbohan/postgraduate-exam-website/graphs/contributors" target="_blank" rel="noopener noreferrer" class="contributors-more">
         查看全部贡献者 →
       </a>
     </section>

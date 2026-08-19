@@ -12,7 +12,6 @@ const BILIBILI_ICON = `<svg viewBox="0 0 24 24" width="16" height="16" fill="cur
 const DOUYIN_ICON = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19.589 9.186a8.122 8.122 0 0 1-4.876-1.614v7.294a6.068 6.068 0 1 1-6.068-6.068c.124 0 .246.012.368.024v3.058a3.012 3.012 0 1 0 2.13 2.887V2h2.965a4.528 4.528 0 0 0 4.527 4.527v2.659z"/></svg>`
 const XHS_ICON = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3.6 7.2c0-.99.81-1.8 1.8-1.8h13.2c.99 0 1.8.81 1.8 1.8v9.6c0 .99-.81 1.8-1.8 1.8H5.4c-.99 0-1.8-.81-1.8-1.8V7.2zm2.4 1.2v7.2h12V8.4h-12zm2.4 2.4h7.2v2.4H8.4v-2.4zm0 3.6h4.8v.6H8.4v-.6zm0-4.8h7.2v.6H8.4v-.6z"/></svg>`
 
-// TODO: 把 url 替换成实际的作者主页地址
 const socials: Social[] = [
   { name: 'bilibili', url: 'https://space.bilibili.com/385409016', icon: BILIBILI_ICON },
 ]

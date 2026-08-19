@@ -21,9 +21,5 @@ export type Contributor = {
 }
 
 export const contributors: Contributor[] = [
-  { name: 'testBilibili', platform: 'bilibili', url: 'https://space.bilibili.com/', },
-  { name: 'testGithub', platform: 'github', url: 'https://github.com/', },
-  { name: 'testXhs', platform: 'xhs', url: 'https://www.xiaohongshu.com/', },
-  { name: 'testDouyin', platform: 'douyin', url: 'https://www.douyin.com/', },
-  { name: 'testBilibili', platform: 'bilibili', url: 'https://space.bilibili.com/', },
+  { name: '11408考研良子', platform: 'bilibili', url: 'https://space.bilibili.com/385409016', },
 ]
