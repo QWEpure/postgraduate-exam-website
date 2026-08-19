@@ -90,13 +90,45 @@ export type ExamListResponse = {
   totalPages: number
 }
 
+export type ExamFilterBookChapterSection = {
+  /** 知识树 section.id，稳定 key */
+  id: string
+  /** 显示名：知识树 section.title，例如「I/O与中断」 */
+  name: string
+  /** 去重后的真题数：题目的 knowledgeBlockIds 与本节的所有 kb-* blockId 有交集 */
+  count: number
+  /** 本节所有 blockId，点选时用于 knowledgeBlockIds= 精确筛选（与 subject 限定同时生效） */
+  blockIds: string[]
+}
+
+export type ExamFilterBookChapter = {
+  /** 知识树 chapter.id，稳定 key */
+  id: string
+  /** 显示名：知识树 chapter.title，例如「总线与输入输出系统」 */
+  name: string
+  /** 本章各 section 的 blockId 并集去重后的题目数量（按 section 聚合后仍可能一题跨多 section，用并集去重） */
+  count: number
+  /** 本章所有 blockId，点选 chapter 时用于精确筛选 */
+  blockIds: string[]
+  sections: ExamFilterBookChapterSection[]
+}
+
 export type ExamFilters = {
   total: number
   years: number[]
   subjects: Array<{ value: ExamSubject; label: string }>
   questionTypes: Array<{ value: ExamQuestionType; label: string }>
   chapters: string[]
-  books: Array<{ subject: ExamSubject; label: string; chapters: Array<{ name: string; count: number }> }>
+  /**
+   * 真题侧栏的「书本 → 章节 → 小节」三级结构，与知识树对齐。
+   * 每一级的 count 都基于 knowledgeBlockIds ∩ 该级 block 并集（去重），
+   * 这样侧栏显示数量与知识页每节「N 道关联真题」使用同一口径。
+   */
+  books: Array<{
+    subject: ExamSubject
+    label: string
+    chapters: ExamFilterBookChapter[]
+  }>
   tags: string[]
   difficulties: number[]
   scores: number[]

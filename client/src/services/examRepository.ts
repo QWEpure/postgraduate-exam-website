@@ -1,5 +1,7 @@
-import type { Exam, ExamFilters, ExamKnowledgeLink, ExamListResponse, ExamQuestionType, ExamSubject } from '@/types'
+import type { Exam, ExamFilters, ExamFilterBookChapter, ExamFilterBookChapterSection, ExamKnowledgeLink, ExamListResponse, ExamQuestionType, ExamSubject } from '@/types'
 import { withBase } from '@/search/shared'
+import { knowledgeBooks } from '@/content/knowledge-tree'
+import { getKnowledgeArticleRegistration } from '@/content/knowledge-articles/registry'
 
 /**
  * 真题静态数据仓库。所有真题数据从 client/public/exams/ 读取（纯静态）。
@@ -40,6 +42,14 @@ const SUBJECT_LABELS = {
   os: '操作系统',
   cn: '计算机网络',
 } as const
+
+/** ExamSubject (ds/co/os/cn) ↔ knowledge Book.subject 枚举值 */
+const EXAM_SUBJECT_TO_KNOWLEDGE_SUBJECT: Record<ExamSubject, string> = {
+  ds: 'DATA_STRUCTURES',
+  co: 'COMPUTER_ORGANIZATION',
+  os: 'OPERATING_SYSTEMS',
+  cn: 'NETWORK',
+}
 
 /* ---------- 请求缓存：避免同一文件重复请求 ---------- */
 let manifestPromise: Promise<ExamManifest> | null = null
@@ -241,26 +251,110 @@ export async function getAdjacentQuestion(
 }
 
 /* ---------- 筛选器（filters） ---------- */
+
+/**
+ * 从知识树 pointId 出发，收集该 point 对应文章里全部 kb-* block ID。
+ * 没注册文章的点返回空数组。
+ */
+function collectBlockIdsOfPoint(pointId: string): string[] {
+  const reg = getKnowledgeArticleRegistration(pointId)
+  if (!reg) return []
+  const ids: string[] = []
+  for (const subpoint of reg.article.subpoints) {
+    for (const block of subpoint.blocks) ids.push(block.id)
+  }
+  return ids
+}
+
+/**
+ * 基于知识块 ID 集合，统计「题目的 knowledgeBlockIds 与之有交集」的去重真题数。
+ * 注意：此处 **不按 subject 过滤**，口径与知识页每节「N 道关联真题」完全一致
+ * （允许跨科目 kb 关联，例如 OS 的系统调用题挂到了 co-interrupt，也会计入 CO 的关联计数）。
+ * 这样侧栏显示的数字与知识页点进去看到的数量才会一致。
+ * 同时返回匹配到的题目 id 集合，供上层去重合并使用。
+ */
+function countIntersectingExams(
+  index: ExamIndexItem[],
+  _subject: ExamSubject,
+  blockIds: Set<string>,
+): { count: number; examIds: Set<string> } {
+  const examIds = new Set<string>()
+  if (blockIds.size === 0) return { count: 0, examIds }
+  for (const row of index) {
+    // 注意：不按 subject 过滤，用 knowledgeBlockIds 关联作为唯一真理
+    if (examIds.has(row.id)) continue
+    if (row.knowledgeBlockIds.some((b) => blockIds.has(b))) examIds.add(row.id)
+  }
+  return { count: examIds.size, examIds }
+}
+
 export async function getExamFilters(): Promise<ExamFilters> {
   const index = await getExamIndex()
   const years = [...new Set(index.map((x) => x.year))].sort((a, b) => b - a)
+  // chapters 列表保留历史字段（兼容其他调用方），内容仍是 paper.json 的原始 chapter 名
   const chapters = [...new Set(index.map((x) => x.chapter))].sort((a, b) => a.localeCompare(b, 'zh-CN'))
   const tags = [...new Set(index.flatMap((x) => x.tags))].sort((a, b) => a.localeCompare(b, 'zh-CN'))
   const subjects = Object.entries(SUBJECT_LABELS).map(([value, label]) => ({ value: value as ExamSubject, label }))
 
   const books = (Object.entries(SUBJECT_LABELS) as Array<[ExamSubject, string]>).map(([subject, label]) => {
-    const counts = new Map<string, number>()
-    for (const row of index) {
-      if (row.subject !== subject) continue
-      counts.set(row.chapter, (counts.get(row.chapter) || 0) + 1)
+    const knowledgeSubject = EXAM_SUBJECT_TO_KNOWLEDGE_SUBJECT[subject]
+    const knowledgeBook = knowledgeBooks.find((b) => b.subject === knowledgeSubject)
+
+    // 知识树上找不到对应书本（极端兜底）：退回 paper.json chapter 字段聚合
+    if (!knowledgeBook) {
+      const counts = new Map<string, number>()
+      for (const row of index) {
+        if (row.subject !== subject) continue
+        counts.set(row.chapter, (counts.get(row.chapter) || 0) + 1)
+      }
+      const fallbackChapters: ExamFilterBookChapter[] = [...counts.entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
+        .map(([name, count]) => ({
+          id: `${subject}__fallback__${name}`,
+          name,
+          count,
+          blockIds: [],
+          sections: [],
+        }))
+      return { subject, label, chapters: fallbackChapters }
     }
-    return {
-      subject,
-      label,
-      chapters: [...counts.entries()]
-        .map(([name, count]) => ({ name, count }))
-        .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN')),
+
+    // 正常路径：按知识树 chapter → section 层级，用 knowledgeBlockIds 交集统计
+    const bookExamIds = new Set<string>()
+    const builtChapters: ExamFilterBookChapter[] = []
+
+    for (const chapter of knowledgeBook.chapters) {
+      const chapterBlockSet = new Set<string>()
+      const sections: ExamFilterBookChapterSection[] = []
+
+      for (const section of chapter.sections) {
+        const sectionBlockSet = new Set<string>()
+        for (const point of section.points) {
+          for (const bid of collectBlockIdsOfPoint(point.id)) sectionBlockSet.add(bid)
+        }
+        const { count, examIds } = countIntersectingExams(index, subject, sectionBlockSet)
+        for (const bid of sectionBlockSet) chapterBlockSet.add(bid)
+        for (const eid of examIds) bookExamIds.add(eid)
+        sections.push({
+          id: section.id,
+          name: section.title,
+          count,
+          blockIds: [...sectionBlockSet],
+        })
+      }
+
+      // chapter 级 count：按本章所有 block 并集去重（避免 section 之间一题多 block 重复计数）
+      const chapterStat = countIntersectingExams(index, subject, chapterBlockSet)
+      builtChapters.push({
+        id: chapter.id,
+        name: chapter.title,
+        count: chapterStat.count,
+        blockIds: [...chapterBlockSet],
+        sections,
+      })
     }
+
+    return { subject, label, chapters: builtChapters }
   })
 
   return {

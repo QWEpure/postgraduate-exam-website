@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import { content as contentApi } from '@/content'
 import { findSubpointLocationByBlockId } from '@/content/knowledge-articles/registry'
-import type { Exam, ExamFilters, ExamQuestionType, ExamSubject } from '@/types'
+import type { Exam, ExamFilterBookChapter, ExamFilterBookChapterSection, ExamFilters, ExamQuestionType, ExamSubject } from '@/types'
 import ExamPaperItem from '@/components/exams/ExamPaperItem.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import DoubleChevronIcon from '@/components/icons/DoubleChevronIcon.vue'
@@ -44,10 +44,15 @@ function onExamSearchKeydown(e: KeyboardEvent) {
 }
 const openToolsId = ref('')
 const openBookId = ref('')
+/** 侧栏展开中的 chapter（知识树 chapter.id），用于在展开某 chapter 时显示其下的 sections 列表 */
+const openChapterId = ref('')
 const selectedYear = ref<number | undefined>(route.query.year ? Number(route.query.year) : undefined)
 const selectedSubject = ref<ExamSubject | ''>((route.query.subject as ExamSubject) || '')
 const selectedType = ref<ExamQuestionType | ''>((route.query.questionType as ExamQuestionType) || '')
+/** 显示用（路由缓存 + 当前筛选摘要），真正的筛选口径由 selectedKnowledgeBlockId/selectedSubject 驱动 */
 const selectedChapter = ref(String(route.query.chapter || ''))
+/** section 级显示用（摘要），真正筛选由 knowledgeBlockIds 精确命中 */
+const selectedSection = ref(String(route.query.section || ''))
 const selectedTag = ref(String(route.query.tag || ''))
 const selectedDifficulty = ref<number | undefined>()
 const selectedKnowledgeBlockId = ref(String(route.query.knowledgeBlockId || route.query.knowledgeBlockIds || ''))
@@ -66,7 +71,9 @@ const currentFilterText = computed(() => {
     selectedYear.value ? `${selectedYear.value} 年` : '',
     filters.value?.subjects.find((item) => item.value === selectedSubject.value)?.label || '',
     filters.value?.questionTypes.find((item) => item.value === selectedType.value)?.label || '',
+    // chapter / section：显示用户点选的知识树章节名，不再依赖 paper.json 的 chapter 字段
     selectedChapter.value,
+    selectedSection.value,
     selectedTag.value,
     ...selectedKnowledgeNames.value,
     keyword.value ? `搜索“${keyword.value}”` : '',
@@ -81,6 +88,7 @@ const hasActiveFilters = computed(() => {
     || selectedSubject.value
     || selectedType.value
     || selectedChapter.value
+    || selectedSection.value
     || selectedTag.value
     || selectedDifficulty.value
     || selectedKnowledgeBlockId.value
@@ -92,7 +100,9 @@ function queryPayload() {
     year: selectedYear.value,
     subject: selectedSubject.value || undefined,
     questionType: selectedType.value || undefined,
-    chapter: selectedChapter.value || undefined,
+    // 侧栏点 chapter/section 时走 knowledgeBlockIds 精确筛选；
+    // chapter 字段保留：仅当外部没有 knowledgeBlockIds、只传 chapter 时走旧的 includes 逻辑（兼容 URL）
+    chapter: selectedKnowledgeBlockId.value ? undefined : (selectedChapter.value || undefined),
     tag: selectedTag.value || undefined,
     difficulty: selectedDifficulty.value,
     knowledgeBlockIds: selectedKnowledgeBlockId.value || undefined,
@@ -146,7 +156,9 @@ function buildFilterQuery() {
   if (selectedYear.value != null) query.year = String(selectedYear.value)
   if (selectedSubject.value) query.subject = selectedSubject.value
   if (selectedType.value) query.questionType = selectedType.value
+  // chapter / section 仅作为 URL 的人类可读提示；真实筛选口径是 knowledgeBlockId
   if (selectedChapter.value) query.chapter = selectedChapter.value
+  if (selectedSection.value) query.section = selectedSection.value
   if (selectedTag.value) query.tag = selectedTag.value
   if (selectedKnowledgeBlockId.value) query.knowledgeBlockId = selectedKnowledgeBlockId.value
   if (keyword.value) query.keyword = keyword.value
@@ -170,6 +182,8 @@ function resetFilters() {
   selectedSubject.value = ''
   selectedType.value = ''
   selectedChapter.value = ''
+  selectedSection.value = ''
+  openChapterId.value = ''
   selectedTag.value = ''
   selectedDifficulty.value = undefined
   selectedKnowledgeBlockId.value = ''
@@ -186,14 +200,62 @@ function changePage(next: number) {
 
 function toggleBook(subject: string) {
   openBookId.value = openBookId.value === subject ? '' : subject
+  if (openBookId.value) openChapterId.value = ''
 }
 
-function selectChapter(subject: ExamSubject, chapter: string) {
+/** 展开/收起当前 chapter 的 sections 二级菜单 */
+function toggleChapter(chapterId: string) {
+  openChapterId.value = openChapterId.value === chapterId ? '' : chapterId
+}
+
+/**
+ * 选择知识树某一章：把该章下所有 blockId 作为 knowledgeBlockIds 精确筛选，
+ * 同时限定 subject，避免跨科目 kb 串题（例如 OS 系统调用挂到 co-interrupt 的情况）。
+ */
+function selectChapter(subject: ExamSubject, chapter: ExamFilterBookChapter) {
   selectedSubject.value = subject
-  selectedChapter.value = chapter
+  selectedChapter.value = chapter.name
+  selectedSection.value = ''
+  selectedKnowledgeBlockId.value = chapter.blockIds.join(',')
 }
 
-function bookTotal(book: { chapters: Array<{ count: number }> }) {
+/**
+ * 选择知识树某一节（section）：按本节 blockIds 精确筛选，数量与知识页每节
+ * 「N 道关联真题」完全一致。
+ */
+function selectSection(subject: ExamSubject, chapter: ExamFilterBookChapter, section: ExamFilterBookChapterSection) {
+  selectedSubject.value = subject
+  selectedChapter.value = chapter.name
+  selectedSection.value = section.name
+  selectedKnowledgeBlockId.value = section.blockIds.join(',')
+}
+
+/**
+ * 是否点中该 chapter（作为整体，非其子 section）：subject + chapter 名匹配且 section 未点中，
+ * 或精确匹配 blockIds 等于该 chapter 的 blockIds（支持从知识页 本节真题 链接跳回后高亮一致）。
+ */
+function isChapterActive(subject: ExamSubject, chapter: ExamFilterBookChapter) {
+  if (selectedSubject.value !== subject) return false
+  if (selectedSection.value) return false
+  const current = selectedKnowledgeBlockId.value.split(',').map((s) => s.trim()).filter(Boolean).sort().join(',')
+  const chapterKb = [...chapter.blockIds].sort().join(',')
+  if (current && chapterKb && current === chapterKb) return true
+  // fallback：URL 直接传 chapter 名称（无 knowledgeBlockIds 精确值时）
+  if (!current && selectedChapter.value === chapter.name) return true
+  return false
+}
+
+/** 是否点中该 section：blockIds 精确匹配 */
+function isSectionActive(subject: ExamSubject, chapter: ExamFilterBookChapter, section: ExamFilterBookChapterSection) {
+  if (selectedSubject.value !== subject) return false
+  const current = selectedKnowledgeBlockId.value.split(',').map((s) => s.trim()).filter(Boolean).sort().join(',')
+  const sectionKb = [...section.blockIds].sort().join(',')
+  if (current && sectionKb && current === sectionKb) return true
+  return false
+}
+
+function bookTotal(book: { chapters: Array<{ count: number; sections?: Array<{ count: number }> }> }) {
+  // chapter.count 已经是本章所有 section 并集去重后的数量，直接 reduce 即可
   return book.chapters.reduce((sum, chapter) => sum + chapter.count, 0)
 }
 
@@ -201,7 +263,7 @@ function updateLayoutMode() {
   compactLayout.value = window.innerWidth < 1024
 }
 
-watch([selectedYear, selectedSubject, selectedType, selectedChapter, selectedTag, selectedDifficulty], () => {
+watch([selectedYear, selectedSubject, selectedType, selectedChapter, selectedSection, selectedTag, selectedDifficulty], () => {
   page.value = 1
   void load()
 })
@@ -377,20 +439,45 @@ onBeforeUnmount(() => {
                 </span>
               </button>
 
-              <ul v-if="openBookId === book.subject" class="m-0 list-none px-1.5 pb-2 pt-1">
-                <li v-for="chapter in book.chapters" :key="chapter.name">
-                  <button
-                    type="button"
-                    class="flex w-full items-center justify-between gap-2 rounded-[4px] px-3 py-2 text-left text-[15px] leading-6 tracking-[-.012em] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#12327f]"
-                    :class="selectedSubject === book.subject && selectedChapter === chapter.name
-                      ? 'bg-[#e6eefb] font-semibold text-[#12327f]'
-                      : 'font-normal text-slate-600 hover:bg-[#f2f5f9] hover:text-[#071225]'"
-                    :aria-current="selectedSubject === book.subject && selectedChapter === chapter.name ? 'page' : undefined"
-                    @click="selectChapter(book.subject, chapter.name)"
-                  >
-                    <span class="min-w-0 truncate">{{ chapter.name }}</span>
-                    <span class="shrink-0 font-mono text-[11px] font-semibold text-slate-400">{{ chapter.count }}</span>
-                  </button>
+              <ul v-if="openBookId === book.subject" class="m-0 list-none px-1.5 pb-2 pt-1 space-y-1">
+                <li v-for="chapter in book.chapters" :key="chapter.id">
+                  <div class="overflow-hidden rounded-[4px]">
+                    <button
+                      type="button"
+                      class="flex w-full items-center justify-between gap-2 rounded-[4px] px-3 py-2 text-left text-[15px] leading-6 tracking-[-.012em] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#12327f]"
+                      :class="isChapterActive(book.subject, chapter)
+                        ? 'bg-[#e6eefb] font-semibold text-[#12327f]'
+                        : openChapterId === chapter.id
+                          ? 'bg-[#f5f8fc] font-semibold text-[#071225]'
+                          : 'font-normal text-slate-600 hover:bg-[#f2f5f9] hover:text-[#071225]'"
+                      :aria-current="isChapterActive(book.subject, chapter) ? 'page' : undefined"
+                      @click="selectChapter(book.subject, chapter)"
+                    >
+                      <span class="min-w-0 truncate">{{ chapter.name }}</span>
+                      <span class="flex shrink-0 items-center gap-1.5">
+                        <span class="font-mono text-[11px] font-semibold text-slate-400">{{ chapter.count }}</span>
+                        <span v-if="chapter.sections.length" class="text-sm font-light text-slate-400 select-none" aria-hidden="true" @click.stop="toggleChapter(chapter.id)">{{ openChapterId === chapter.id ? '−' : '+' }}</span>
+                      </span>
+                    </button>
+
+                    <!-- 小节（section）二级菜单：数量与知识页每节「N 道关联真题」口径一致 -->
+                    <ul v-if="chapter.sections.length && openChapterId === chapter.id" class="m-0 mt-0.5 list-none space-y-0.5 border-l border-[#e1e8f3] pl-2">
+                      <li v-for="section in chapter.sections" :key="section.id">
+                        <button
+                          type="button"
+                          class="flex w-full items-center justify-between gap-2 rounded-[4px] px-3 py-1.5 text-left text-[14px] leading-6 tracking-[-.01em] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#12327f]"
+                          :class="isSectionActive(book.subject, chapter, section)
+                            ? 'bg-[#e6eefb] font-semibold text-[#12327f]'
+                            : 'font-normal text-slate-500 hover:bg-[#f2f5f9] hover:text-[#071225]'"
+                          :aria-current="isSectionActive(book.subject, chapter, section) ? 'page' : undefined"
+                          @click="selectSection(book.subject, chapter, section)"
+                        >
+                          <span class="min-w-0 truncate">{{ section.name }}</span>
+                          <span class="shrink-0 font-mono text-[11px] font-semibold text-slate-400">{{ section.count }}</span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
             </li>
