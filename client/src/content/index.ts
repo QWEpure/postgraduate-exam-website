@@ -22,8 +22,8 @@ function getPointLocation(pointId: string) {
 
 function getKnowledgePageHref(pointId: string, blockId?: string) {
   const location = getPointLocation(pointId)
-  if (!location) return '/knowledge'
-  const href = `/knowledge/${location.book.id}/${location.section.id}`
+  if (!location) return '#/knowledge'
+  const href = `#/knowledge/${location.book.id}/${location.section.id}`
   return blockId ? `${href}?block=${encodeURIComponent(blockId)}` : href
 }
 

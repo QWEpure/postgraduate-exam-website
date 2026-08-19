@@ -26,7 +26,7 @@ const outputPath = computed(() => getKnowledgeArticleOutputPath(article.value))
 const isEditingExisting = computed(() => Boolean(sourcePointId.value))
 const knowledgePageHref = computed(() => sourcePointId.value
   ? content.getKnowledgePageHref(sourcePointId.value)
-  : '/knowledge')
+  : '#/knowledge')
 const blockOptions: Array<{ type: EditableBlockType; label: string }> = [
   { type: 'paragraph', label: '正文' },
   { type: 'formula', label: '公式' },
