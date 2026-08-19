@@ -1,4 +1,4 @@
-import { FadeIn, Rectangle, Shift, Text, VGroup, linear, smooth, type Scene } from 'manim-web'
+import { FadeIn, Rectangle, Shift, Text, VGroup, linear, smooth, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 const C = {

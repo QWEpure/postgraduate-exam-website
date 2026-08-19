@@ -1,4 +1,4 @@
-import { FadeIn, Indicate, Rectangle, Shift, VGroup, linear, type Scene } from 'manim-web'
+import { FadeIn, Indicate, Rectangle, Shift, VGroup, linear, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 import { NC, nArrow, nHeading, nMono, nPacket, nText, nWire } from '../network-visuals'
 

@@ -10,7 +10,7 @@ import {
   linear,
   smooth,
   type Scene,
-} from 'manim-web'
+} from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 import {
   C,

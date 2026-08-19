@@ -1,4 +1,4 @@
-import { Arrow, Circle, FadeIn, Rectangle, Text, VGroup, type Scene } from 'manim-web'
+import { Arrow, Circle, FadeIn, Rectangle, Text, VGroup, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 const C = { ink: '#0f172a', muted: '#64748b', line: '#94a3b8', faint: '#e2e8f0', blue: '#1d4ed8', orange: '#c2410c', green: '#047857', red: '#be123c', violet: '#6d28d9' } as const

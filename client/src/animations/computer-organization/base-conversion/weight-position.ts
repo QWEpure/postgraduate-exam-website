@@ -1,4 +1,4 @@
-import { FadeIn, Rectangle, Text, type Scene } from 'manim-web'
+import { FadeIn, Rectangle, Text, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 // ===== 负数示例（补码）：11111010₂ = -6 =====

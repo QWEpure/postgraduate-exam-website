@@ -1,4 +1,4 @@
-import { Arrow, Line, Polygon, Rectangle, Text, VGroup, type Mobject } from 'manim-web'
+import { Arrow, Line, Polygon, Rectangle, Text, VGroup, type Mobject } from '@/animations/manim'
 
 export const C = {
   ink: '#0f172a',

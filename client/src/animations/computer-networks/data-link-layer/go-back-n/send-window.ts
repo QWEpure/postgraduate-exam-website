@@ -1,4 +1,4 @@
-import { Create, FadeIn, Line, Rectangle, Shift, Text, VGroup, linear, type Scene } from 'manim-web'
+import { Create, FadeIn, Line, Rectangle, Shift, Text, VGroup, linear, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../../types'
 
 type WindowFrame = {

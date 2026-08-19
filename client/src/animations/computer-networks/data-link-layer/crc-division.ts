@@ -1,4 +1,4 @@
-import { FadeIn, Indicate, Line, Rectangle, Text, type Scene } from 'manim-web'
+import { FadeIn, Indicate, Line, Rectangle, Text, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 // ===== CRC 除法数据 =====

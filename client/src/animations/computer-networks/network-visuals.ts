@@ -1,4 +1,4 @@
-import { Arrow, Line, Rectangle, Text, VGroup } from 'manim-web'
+import { Arrow, Line, Rectangle, Text, VGroup } from '@/animations/manim'
 
 export const NC = {
   ink: '#0f172a',

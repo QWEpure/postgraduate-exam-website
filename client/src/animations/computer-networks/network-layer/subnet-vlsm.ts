@@ -1,4 +1,4 @@
-import { Circle, Create, FadeIn, Line, Text, VGroup, type Scene } from 'manim-web'
+import { Circle, Create, FadeIn, Line, Text, VGroup, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 /*

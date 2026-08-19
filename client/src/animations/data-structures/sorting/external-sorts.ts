@@ -9,7 +9,7 @@ import {
   Transform,
   smooth,
   type Scene,
-} from 'manim-web'
+} from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 const C = {

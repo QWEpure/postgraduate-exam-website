@@ -1,4 +1,4 @@
-import { FadeIn, Indicate, Rectangle, Shift, Text, VGroup, linear, type Scene } from 'manim-web'
+import { FadeIn, Indicate, Rectangle, Shift, Text, VGroup, linear, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../../types'
 
 /*

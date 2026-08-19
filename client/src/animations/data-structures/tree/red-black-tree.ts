@@ -1,4 +1,4 @@
-import { Arrow, Circle, FadeIn, FadeOut, Rectangle, Shift, Text, Transform, smooth, type Scene } from 'manim-web'
+import { Arrow, Circle, FadeIn, FadeOut, Rectangle, Shift, Text, Transform, smooth, type Scene } from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 const C = {

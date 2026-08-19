@@ -17,7 +17,7 @@ import {
   type Mobject,
   type Scene,
   type Vector3Tuple,
-} from 'manim-web'
+} from '@/animations/manim'
 import type { ManimWebAnimation } from '../../types'
 
 /**
