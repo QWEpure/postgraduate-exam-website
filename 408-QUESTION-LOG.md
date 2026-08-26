@@ -10,8 +10,8 @@
 | 数据结构 | 0 | 0 | 0 | 0 |
 | 计算机组成原理 | 0 | 0 | 0 | 0 |
 | 操作系统 | 0 | 0 | 0 | 0 |
-| 计算机网络 | 2 | 2 | 0 | 0 |
-| **合计** | **2** | **2** | **0** | **0** |
+| 计算机网络 | 3 | 3 | 0 | 0 |
+| **合计** | **3** | **3** | **0** | **0** |
 
 ## 问题清单
 
@@ -19,6 +19,7 @@
 |---|------|------|--------|------|----------|------|
 | 1 | 2026-08-20 | 计算机网络 | 虚电路（交换方式） | 虚电路是什么？和数据报、电路交换的区别？ | [交换方式](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/physical-layer/switching) | 🔴 待复习 |
 | 2 | 2026-08-20 | 计算机网络 | IPv4 D/E 类地址 | IPv4 的 D 类、E 类地址是什么？ | [IPv4地址](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/network-layer/ip-address) | 🔴 待复习 |
+| 3 | 2026-08-20 | 计算机网络 | A类地址范围（0/127保留） | A类为什么是1到126？另外两个去哪了？ | [IPv4地址](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/network-layer/ip-address) | 🔴 待复习 |
 
 ## 使用方式
 
