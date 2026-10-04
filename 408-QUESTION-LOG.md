@@ -7,11 +7,11 @@
 
 | 科目 | 提问数 | 待复习 | 基本理解 | 已掌握 |
 |------|--------|--------|----------|--------|
-| 数据结构 | 0 | 0 | 0 | 0 |
+| 数据结构 | 1 | 1 | 0 | 0 |
 | 计算机组成原理 | 0 | 0 | 0 | 0 |
 | 操作系统 | 0 | 0 | 0 | 0 |
 | 计算机网络 | 4 | 4 | 0 | 0 |
-| **合计** | **4** | **4** | **0** | **0** |
+| **合计** | **5** | **5** | **0** | **0** |
 
 ## 问题清单
 
@@ -21,6 +21,7 @@
 | 2 | 2026-08-20 | 计算机网络 | IPv4 D/E 类地址 | IPv4 的 D 类、E 类地址是什么？ | [IPv4地址](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/network-layer/ip-address) | 🔴 待复习 |
 | 3 | 2026-08-20 | 计算机网络 | A类地址范围（0/127保留） | A类为什么是1到126？另外两个去哪了？ | [IPv4地址](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/network-layer/ip-address) | 🔴 待复习 |
 | 4 | 2026-08-26 | 计算机网络 | IPv4首部20字节字段 | IPv4数据报首部20字节具体是哪些字段？ | [IPv4数据报](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/network-layer/ipv4) | 🔴 待复习 |
+| 5 | 2026-08-30 | 数据结构 | 稀疏矩阵压缩存储（2017真题T3） | 适用于压缩存储稀疏矩阵的两种存储结构是？ | [矩阵压缩存储](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/data-structures/ds-3-5-matrix-compression) | 🔴 待复习 |
 
 ## 使用方式
 
