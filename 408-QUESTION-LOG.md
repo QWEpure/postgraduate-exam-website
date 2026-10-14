@@ -9,9 +9,9 @@
 |------|--------|--------|----------|--------|
 | 数据结构 | 1 | 1 | 0 | 0 |
 | 计算机组成原理 | 0 | 0 | 0 | 0 |
-| 操作系统 | 0 | 0 | 0 | 0 |
+| 操作系统 | 1 | 1 | 0 | 0 |
 | 计算机网络 | 4 | 4 | 0 | 0 |
-| **合计** | **5** | **5** | **0** | **0** |
+| **合计** | **6** | **6** | **0** | **0** |
 
 ## 问题清单
 
@@ -22,6 +22,7 @@
 | 3 | 2026-08-20 | 计算机网络 | A类地址范围（0/127保留） | A类为什么是1到126？另外两个去哪了？ | [IPv4地址](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/network-layer/ip-address) | 🔴 待复习 |
 | 4 | 2026-08-26 | 计算机网络 | IPv4首部20字节字段 | IPv4数据报首部20字节具体是哪些字段？ | [IPv4数据报](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/computer-networks/network-layer/ipv4) | 🔴 待复习 |
 | 5 | 2026-08-30 | 数据结构 | 稀疏矩阵压缩存储（2017真题T3） | 适用于压缩存储稀疏矩阵的两种存储结构是？ | [矩阵压缩存储](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/data-structures/ds-3-5-matrix-compression) | 🔴 待复习 |
+| 6 | 2026-08-30 | 操作系统 | 混合索引与文件最大长度（2013真题T26） | inode 中有直接/间接地址项时，与单个文件长度无关的因素是？ | [文件的物理结构](https://liangbohan.github.io/postgraduate-exam-website/#/knowledge/operating-systems/file-physical) | 🔴 待复习 |
 
 ## 使用方式
 
